@@ -2,12 +2,8 @@
 <html>
 <head><meta charset="utf-8" />
 
+
 <title>EMI_calculator</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
 
 <style type="text/css">
     /*!
@@ -13033,20 +13029,17 @@ div#notebook {
   div.cell {
     display: block;
     page-break-inside: avoid;
-  } 
-  div.output_wrapper { 
-    display: block;
-    page-break-inside: avoid; 
   }
-  div.output { 
+  div.output_wrapper {
     display: block;
-    page-break-inside: avoid; 
+    page-break-inside: avoid;
+  }
+  div.output {
+    display: block;
+    page-break-inside: avoid;
   }
 }
 </style>
-
-<!-- Custom stylesheet, it must be in the same directory as the html file -->
-<link rel="stylesheet" href="custom.css">
 
 <!-- Loading mathjax macro -->
 <!-- Load mathjax -->
@@ -13069,17 +13062,106 @@ div#notebook {
         }
     });
     </script>
-    <!-- End of mathjax configuration --></head>
+    <!-- End of mathjax configuration -->
+
+<style>
+        .cell.nbinteract-left {
+            width: 50%;
+            float: left;
+        }
+
+        .cell.nbinteract-right {
+            width: 50%;
+            float: right;
+        }
+
+        .cell.nbinteract-hide_in > .input {
+            display: none;
+        }
+
+        .cell.nbinteract-hide_out > .output_wrapper {
+            display: none;
+        }
+
+        .cell:after {
+          content: "";
+          display: table;
+          clear: both;
+        }
+
+        div.output_subarea {
+            max-width: initial;
+        }
+
+        .jp-OutputPrompt {
+            display: none;
+        }
+    </style></head>
 <body>
   <div tabindex="-1" id="notebook" class="border-box-sizing">
-    <div class="container" id="notebook-container">
+    <div class="container">
+      
 
-<div class="cell border-box-sizing code_cell rendered">
+
+
+  <div class="cell text_cell">
+    <button class="js-nbinteract-widget">
+      Loading widgets...
+    </button>
+  </div>
+
+
+
+
+  
+
+  <div class="
+      cell border-box-sizing code_cell rendered">
+    <div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#hide nbi</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">ipywidgets</span> <span class="k">as</span> <span class="nn">widgets</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">display</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">layout</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;width&#39;</span><span class="p">:</span><span class="s1">&#39;350px&#39;</span><span class="p">,</span><span class="s1">&#39;margin&#39;</span><span class="p">:</span><span class="s1">&#39;0 0 0 0&#39;</span><span class="p">,</span><span class="s1">&#39;padding&#39;</span><span class="p">:</span><span class="s1">&#39;0 0 0 0&#39;</span><span class="p">}</span>
+<span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;description_width&#39;</span><span class="p">:</span><span class="s1">&#39;150px&#39;</span><span class="p">}</span>
+<span class="n">principle</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">FloatText</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Loan amount&#39;</span><span class="p">,</span><span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">,</span><span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">)</span>
+<span class="n">RateOfInterest</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">FloatText</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Annual Interest Rate(%)&#39;</span><span class="p">,</span><span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">,</span><span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">)</span>
+<span class="n">duration</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">FloatText</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;duration(months)&#39;</span><span class="p">,</span><span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">,</span><span class="n">style</span><span class="o">=</span><span class="n">style</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">emi</span><span class="p">(</span><span class="n">principle</span><span class="p">,</span><span class="n">RateOfInterest</span><span class="p">,</span><span class="n">duration</span><span class="p">):</span>
+    <span class="n">i</span><span class="o">=</span><span class="n">RateOfInterest</span><span class="o">/</span><span class="mi">100</span><span class="o">/</span><span class="mi">12</span>
+    <span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="o">+</span><span class="n">i</span>
+    <span class="n">p</span><span class="o">=</span><span class="n">principle</span>
+    <span class="n">n</span><span class="o">=</span><span class="n">duration</span>
+    <span class="n">emi</span><span class="o">=</span><span class="n">p</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">i</span><span class="p">)</span><span class="o">**</span><span class="n">n</span><span class="o">/</span><span class="p">(((</span><span class="mi">1</span><span class="o">+</span><span class="n">i</span><span class="p">)</span><span class="o">**</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">e</span><span class="o">=</span><span class="n">emi</span>
+    <span class="n">total_interest_paid</span><span class="o">=</span><span class="p">(</span><span class="n">p</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">e</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">e</span><span class="o">*</span><span class="n">n</span><span class="o">/</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">i</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;EMI: </span><span class="si">{}</span><span class="s1"> </span><span class="se">\n\n</span><span class="s1">Total interest paid: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">emi</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">total_interest_paid</span><span class="p">,</span><span class="mi">0</span><span class="p">))))</span>
+<span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="o">.</span><span class="mi">05</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;EMI Calculator&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span><span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;heavy&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([])</span>
+<span class="n">display</span><span class="p">(</span><span class="n">VBox</span><span class="p">([</span><span class="n">principle</span><span class="p">,</span><span class="n">RateOfInterest</span><span class="p">,</span><span class="n">duration</span><span class="p">]),</span>
+<span class="n">widgets</span><span class="o">.</span><span class="n">interactive_output</span><span class="p">(</span><span class="n">emi</span><span class="p">,{</span><span class="s1">&#39;principle&#39;</span><span class="p">:</span><span class="n">principle</span><span class="p">,</span><span class="s1">&#39;RateOfInterest&#39;</span><span class="p">:</span><span class="n">RateOfInterest</span><span class="p">,</span><span class="s1">&#39;duration&#39;</span><span class="p">:</span><span class="n">duration</span><span class="p">}))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 <div class="output_wrapper">
 <div class="output">
 
+
 <div class="output_area">
+
+    
 
 
 
@@ -13093,51 +13175,59 @@ div#notebook {
 
 <div class="output_area">
 
+    
 
 
 
- 
- 
-<div id="d3c84f34-2d11-44dd-92e0-0f90645927cc"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#d3c84f34-2d11-44dd-92e0-0f90645927cc');
-</script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "5f170733c78a4d78898f53fd7ad1a532", "version_major": 2, "version_minor": 0}
-</script>
-</div>
+  <div class="output_subarea output_widget_view ">
+    <button class="js-nbinteract-widget">
+      Loading widgets...
+    </button>
+  </div>
 
 </div>
 
 <div class="output_area">
 
+    
 
 
 
- 
- 
-<div id="e82fe638-8c36-4f9f-a812-884d42e26cd0"></div>
-<div class="output_subarea output_widget_view ">
-<script type="text/javascript">
-var element = $('#e82fe638-8c36-4f9f-a812-884d42e26cd0');
+  <div class="output_subarea output_widget_view ">
+    <button class="js-nbinteract-widget">
+      Loading widgets...
+    </button>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+  </div>
+
+
+
+<!-- Loads nbinteract package -->
+<script src="https://unpkg.com/nbinteract-core" async></script>
+<script>
+  (function setupNbinteract() {
+    // If NbInteract hasn't loaded, wait one second and try again
+    if (window.NbInteract === undefined) {
+      setTimeout(setupNbinteract, 1000)
+      return
+    }
+
+    var interact = new window.NbInteract({
+      spec: 'sprabhakar2006/apps/master',
+      baseUrl: 'https://mybinder.org',
+      provider: 'gh',
+    })
+    interact.prepare()
+
+    window.interact = interact
+  })()
 </script>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "fa4224faa8ce497f83e8d7cf8fd57856", "version_major": 2, "version_minor": 0}
-</script>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
     </div>
   </div>
 </body>
-
- 
-
-
-</html>
