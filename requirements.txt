@@ -1,6 +1,11 @@
-numpy
+ipython
+ipython-genutils
 ipywidgets
-nbinteract
-pandas
-IPython
+jupyter-dashboards
 matplotlib
+numpy
+pandas
+scipy
+seaborn
+widgetsnbextension
+nbinteract
