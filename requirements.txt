@@ -9,5 +9,4 @@ scipy
 seaborn
 widgetsnbextension
 nbinteract
-codecs
 io
